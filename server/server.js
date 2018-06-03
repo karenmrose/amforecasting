@@ -16,9 +16,16 @@ const pathToMongoDb = 'mongodb://localhost/amforecasting-local'
 const host = 'http://localhost:8080/'
 
 mongoose.Promise = require('bluebird')
-mongoose.connect(pathToMongoDb)
-	.then(() => console.log('Connected to Mongo'))
-	.catch((err) => console.error(err))
+
+const startDatabase = async () => {
+	try {
+		await mongoose.connect(pathToMongoDb)
+		console.log('Connected to Mongo')
+	} catch (error) {
+		console.log('Error connecting to Mongo', error)
+	}
+}
+startDatabase()
 
 const routes = require('./routes')
 
