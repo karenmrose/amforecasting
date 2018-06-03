@@ -11,4 +11,15 @@ router.get('/api/jobs', async (req, res) => {
 	res.json(jobs)
 })
 
+router.post('/api/jobs', async (req, res) => {
+	const { jobName, numberOfWorkers } = req.body
+
+	const newJob = await JobModel.create({
+		jobName,
+		numberOfWorkers,
+	})
+
+	res.json(newJob)
+})
+
 module.exports = router
