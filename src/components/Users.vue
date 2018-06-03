@@ -12,7 +12,9 @@
 </template>
 
 <script>
-export default { name: 'Users' }
+export default {
+	name: 'Users',
+}
 </script>
 
 <style scoped>

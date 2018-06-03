@@ -12,7 +12,7 @@ export default {
 	name: 'HelloWorld',
 	data () {
 		return { msg: 'A&M Forecasting System' }
-	}
+	},
 }
 </script>
 

@@ -32,7 +32,7 @@ const smtpServer = email.server.connect({
 	password: yourPassword,
 	timeout: 60000,
 	host: yourSmtp,
-	ssl: true
+	ssl: true,
 })
 
 passwordless.init(new MongoStore(pathToMongoDb))
@@ -45,7 +45,7 @@ passwordless.addDelivery(
 			text: `${message}\n\n${token}`,
 			from: yourEmail,
 			to: recipient,
-			subject: 'A&M Forecasting System Login'
+			subject: 'A&M Forecasting System Login',
 			// attachment: [
 			// 	{
 			// 		data: "<html>INSERT HTML STRING LINKING TO TOKEN</html>",
@@ -68,7 +68,7 @@ app.use(expressSession({
 	secret: 'quincylarsonisaprinceamongmen',
 	saveUninitialized: false,
 	resave: false,
-	cookie: { maxAge: 60 * 60 * 24 * 365 * 10 }
+	cookie: { maxAge: 60 * 60 * 24 * 365 * 10 },
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 
