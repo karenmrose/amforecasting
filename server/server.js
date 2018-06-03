@@ -31,24 +31,23 @@ const host = 'http://localhost:8080/'
 
 passwordless.init(new MongoStore(pathToMongoDb))
 passwordless.addDelivery(
-	function( tokenToSend, uidToSend, recipient, callback ) {
-		// Send out token
-		console.log('SEND OUT TOKEN')
+	function (tokenToSend, uidToSend, recipient, callback) {
+		const message = 'Click the link below to login to the A&M Forecasting System:'
+		const token = `${host}?token=${tokenToSend}&uid=${encodeURIComponent(uidToSend)}`
+
 		smtpServer.send({
-			text: 'Hello!\nYou can now access your account here:'
-			+ host + '?token=' + tokenToSend + '&uid='
-			+ encodeURIComponent(uidToSend),
+			text: `${message}\n\n${token}`,
 			from: yourEmail,
 			to: recipient,
-			subject: 'A&M Forecasting System Login',
+			subject: 'A&M Forecasting System Login'
 			// attachment: [
 			// 	{
 			// 		data: "<html>INSERT HTML STRING LINKING TO TOKEN</html>",
 			// 		alternative: true
 			// 	}
 			// ]
-		}, function( err, message ) {
-			if(err) {
+		}, function (err, message) {
+			if (err) {
 				console.log(err)
 			}
 			callback(err)
