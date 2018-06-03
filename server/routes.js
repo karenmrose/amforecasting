@@ -31,4 +31,19 @@ router.post('/api/users', async (req, res) => {
 	res.json(newUser)
 })
 
+router.delete('/api/users/:userId', async (req, res) => {
+	const { userId } = req.params
+	const user = await UserModel.find({ _id: userId })
+
+	await UserModel.update({
+		...user,
+		isRemoved: true,
+		dateRemoved: Date.now(),
+	})
+
+	const removedUser = await UserModel.find({ _id: userId })
+
+	res.json(removedUser)
+})
+
 module.exports = router
