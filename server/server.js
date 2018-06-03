@@ -27,8 +27,6 @@ const startDatabase = async () => {
 }
 startDatabase()
 
-const routes = require('./routes')
-
 const app = express()
 
 const yourEmail = process.env.AM_FORECASTING_EMAIL_ADDRESS
@@ -83,7 +81,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(passwordless.sessionSupport())
 app.use(passwordless.acceptToken({ successRedirect: '/' }))
 
-app.use('/', routes)
+app.use('/',
+	require('./routes'),
+	require('./user/routes'),
+)
 
 app.listen(port, function () {
 	console.log('Magic happens on port ' + port)
