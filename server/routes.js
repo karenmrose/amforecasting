@@ -12,6 +12,12 @@ router.post('/api/sendtoken', passwordless.requestToken((user, delivery, callbac
 	res.json({ 'sent': true })
 })
 
+router.get('/api/users', async (req, res) => {
+	const users = await UserModel.find()
+
+	res.json(users)
+})
+
 router.post('/api/users', async (req, res) => {
 	const { firstName, lastName, emailAddress, title } = req.body
 
