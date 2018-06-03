@@ -44,4 +44,23 @@ router.put('/api/jobs/:jobId', async (req, res) => {
 	res.json(updatedJob)
 })
 
+router.delete('/api/jobs/:jobId', async (req, res) => {
+	const { jobId } = req.params
+
+	const job = await JobModel.findOne({ _id: jobId }).lean()
+	if (!job) {
+		throw Boom.notFound(`Job not found by id ${jobId}`)
+	}
+
+	await JobModel.update({
+		...job,
+		isRemoved: true,
+		dateRemoved: Date.now(),
+	})
+
+	const removedJob = await JobModel.findOne({ _id: jobId }).lean()
+
+	res.json(removedJob)
+})
+
 module.exports = router
