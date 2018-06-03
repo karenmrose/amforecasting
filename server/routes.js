@@ -1,5 +1,6 @@
 'use strict'
 
+const Boom = require('boom')
 const express = require('express')
 const router = express.Router()
 const passwordless = require('passwordless')
@@ -13,7 +14,7 @@ router.post('/api/sendtoken', passwordless.requestToken((user, delivery, callbac
 })
 
 router.get('/api/users', async (req, res) => {
-	const users = await UserModel.find()
+	const users = await UserModel.find().lean()
 
 	res.json(users)
 })
@@ -31,9 +32,36 @@ router.post('/api/users', async (req, res) => {
 	res.json(newUser)
 })
 
+router.put('/api/users/:userId', async (req, res) => {
+	const { userId } = req.params
+	const { firstName, lastName, emailAddress, title } = req.body
+
+	const user = await UserModel.findOne({ _id: userId }).lean()
+	if (!user) {
+		throw Boom.notFound(`User not found by id ${userId}`)
+	}
+
+	await UserModel.update({
+		...user,
+		firstName,
+		lastName,
+		emailAddress,
+		title,
+		dateUpdated: Date.now(),
+	})
+
+	const updatedUser = await UserModel.findOne({ _id: userId }).lean()
+
+	res.json(updatedUser)
+})
+
 router.delete('/api/users/:userId', async (req, res) => {
 	const { userId } = req.params
-	const user = await UserModel.find({ _id: userId })
+
+	const user = await UserModel.findOne({ _id: userId }).lean()
+	if (!user) {
+		throw Boom.notFound(`User not found by id ${userId}`)
+	}
 
 	await UserModel.update({
 		...user,
@@ -41,7 +69,7 @@ router.delete('/api/users/:userId', async (req, res) => {
 		dateRemoved: Date.now(),
 	})
 
-	const removedUser = await UserModel.find({ _id: userId })
+	const removedUser = await UserModel.findOne({ _id: userId }).lean()
 
 	res.json(removedUser)
 })
