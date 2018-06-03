@@ -84,6 +84,7 @@ app.use(passwordless.acceptToken({ successRedirect: '/' }))
 app.use('/',
 	require('./routes'),
 	require('./user/routes'),
+	require('./job/routes')
 )
 
 app.listen(port, function () {
