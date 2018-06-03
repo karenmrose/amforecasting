@@ -6,10 +6,19 @@ const email = require('emailjs')
 const express = require('express')
 const expressSession = require('express-session')
 const passwordless = require('passwordless')
+const mongoose = require('mongoose')
 const MongoStore = require('passwordless-mongostore')
 const logger = require('morgan')
 const path = require('path')
 const port = process.env.PORT || 5000
+
+const pathToMongoDb = 'mongodb://localhost/amforecasting-local'
+const host = 'http://localhost:8080/'
+
+mongoose.Promise = require('bluebird')
+mongoose.connect(pathToMongoDb)
+	.then(() => console.log('Connected to Mongo'))
+	.catch((err) => console.error(err))
 
 const routes = require('./routes')
 
@@ -25,9 +34,6 @@ const smtpServer = email.server.connect({
 	host: yourSmtp,
 	ssl: true
 })
-
-const pathToMongoDb = 'mongodb://localhost/amforecasting-local'
-const host = 'http://localhost:8080/'
 
 passwordless.init(new MongoStore(pathToMongoDb))
 passwordless.addDelivery(
