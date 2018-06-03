@@ -1,6 +1,10 @@
 'use strict'
 
-const mongoConnection = require('../mongo-connections').localhost
-const mongooseSchema = require('./mongoose-schema')
+const mongoose = require('mongoose')
 
-module.exports = mongoConnection.model('User', mongooseSchema)
+const schema = require('./schema')
+
+const userSchema = mongoose.Schema(schema)
+const UserModel = mongoose.model('Users', userSchema)
+
+module.exports = UserModel
